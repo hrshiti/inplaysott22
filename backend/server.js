@@ -369,11 +369,18 @@ const startServer = async () => {
   // Socket.IO Setup
   const { Server } = require('socket.io');
   const io = new Server(server, {
+    path: '/api/socket.io',
     cors: {
       origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
+        if (!origin) return callback(null, true);
+        
+        // Remove trailing slash if present
+        const cleanOrigin = origin.replace(/\/$/, '');
+        
+        if (allowedOrigins.includes(cleanOrigin)) {
           callback(null, true);
         } else {
+          console.error(`❌ [Socket] BLOCKED BY CORS: '${origin}'`);
           callback(new Error('Not allowed by CORS'));
         }
       },

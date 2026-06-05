@@ -70,10 +70,11 @@ async function getFCMToken() {
             return null;
         }
     } catch (error) {
-        console.error('❌ Error getting FCM token:', error);
-        // Special check for permission error
+        // Special check for permission error to avoid error spam
         if (error.code === 'messaging/permission-blocked') {
-            console.warn('⚠️ Notification permission was blocked by user');
+            console.warn('⚠️ Notification permission was blocked by user. Notifications disabled.');
+        } else {
+            console.error('❌ Error getting FCM token:', error);
         }
         return null;
     }
