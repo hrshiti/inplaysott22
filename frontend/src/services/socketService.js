@@ -20,6 +20,7 @@ const socketService = {
         if (!socket) {
             console.log('🔌 [Socket] Connecting to:', SOCKET_URL);
             socket = io(SOCKET_URL, {
+                path: '/api/socket.io',
                 autoConnect: true,
                 reconnection: true,
                 reconnectionAttempts: Infinity,

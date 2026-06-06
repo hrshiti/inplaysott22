@@ -6,6 +6,7 @@ const morgan = require('morgan');
 
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 const mm = require('music-metadata');
 const dns = require("dns");
 dns.setDefaultResultOrder("ipv4first");
@@ -151,6 +152,22 @@ app.use('/api/public', require('./routes/publicTabRoutes'));
 // -------------------
 // Multer Storage Setup
 // -------------------
+
+// Ensure upload directories exist automatically (Fixes issue where Git ignores empty folders)
+const uploadDirs = [
+  path.join(__dirname, 'uploads'),
+  path.join(__dirname, 'uploads/images'),
+  path.join(__dirname, 'uploads/videos'),
+  path.join(__dirname, 'uploads/audio')
+];
+
+uploadDirs.forEach(dir => {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+    console.log(`📁 Created missing directory: ${dir}`);
+  }
+});
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     if (file.mimetype.startsWith("image"))
@@ -369,11 +386,18 @@ const startServer = async () => {
   // Socket.IO Setup
   const { Server } = require('socket.io');
   const io = new Server(server, {
+    path: '/api/socket.io',
     cors: {
       origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
+        if (!origin) return callback(null, true);
+        
+        // Remove trailing slash if present
+        const cleanOrigin = origin.replace(/\/$/, '');
+        
+        if (allowedOrigins.includes(cleanOrigin)) {
           callback(null, true);
         } else {
+          console.error(`❌ [Socket] BLOCKED BY CORS: '${origin}'`);
           callback(new Error('Not allowed by CORS'));
         }
       },

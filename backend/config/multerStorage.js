@@ -213,7 +213,7 @@ const getPublicUrl = (filePath) => {
     const relativePath = path.relative(UPLOAD_BASE, filePath);
 
     // Generate URL (works for both dev and production)
-    const baseUrl = process.env.BACKEND_URL;
+    const baseUrl = process.env.BACKEND_URL || 'https://api.inplays.in';
     return `${baseUrl}/uploads/${relativePath.replace(/\\/g, '/')}`;
 };
 
