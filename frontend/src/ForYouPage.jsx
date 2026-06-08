@@ -442,32 +442,32 @@ function ReelItem({
             {/* Right Sidebar Actions */}
             <div style={{ position: 'absolute', bottom: '156px', right: '10px', display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center', zIndex: 20 }}>
                 <div onClick={handleLike} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
-                    <Heart size={32} fill={isLiked ? "#ef4444" : "white"} color={isLiked ? "#ef4444" : "white"} strokeWidth={1.5} />
-                    <span style={{ color: 'white', fontSize: '14px', fontWeight: 'bold' }}>{likes}</span>
+                    <Heart size={32} fill={isLiked ? "#ef4444" : "white"} color={isLiked ? "#ef4444" : "white"} strokeWidth={1.5} style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.8))' }} />
+                    <span style={{ color: '#ffffff', fontSize: '14px', fontWeight: 'bold', textShadow: '0 2px 6px rgba(0,0,0,0.9), 0 0 2px rgba(0,0,0,1)' }}>{likes}</span>
                 </div>
                 <div onClick={() => setShowComments(true)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
-                    <MessageCircle size={32} fill="white" color="white" strokeWidth={1.5} />
-                    <span style={{ color: 'white', fontSize: '14px', fontWeight: 'bold' }}>Comments</span>
+                    <MessageCircle size={32} fill="white" color="white" strokeWidth={1.5} style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.8))' }} />
+                    <span style={{ color: '#ffffff', fontSize: '14px', fontWeight: 'bold', textShadow: '0 2px 6px rgba(0,0,0,0.9), 0 0 2px rgba(0,0,0,1)' }}>Comments</span>
                 </div>
                 <div onClick={handleShare} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
-                    <Share2 size={32} fill="white" color="white" strokeWidth={1.5} />
-                    <span style={{ color: 'white', fontSize: '14px', fontWeight: 'bold' }}>Share</span>
+                    <Share2 size={32} fill="white" color="white" strokeWidth={1.5} style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.8))' }} />
+                    <span style={{ color: '#ffffff', fontSize: '14px', fontWeight: 'bold', textShadow: '0 2px 6px rgba(0,0,0,0.9), 0 0 2px rgba(0,0,0,1)' }}>Share</span>
                 </div>
             </div>
 
             {/* Bottom Info */}
-            <div style={{ position: 'absolute', bottom: '100px', left: '16px', right: '80px', color: 'white', zIndex: 20, textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>
+            <div style={{ position: 'absolute', bottom: '100px', left: '16px', right: '80px', color: '#ffffff', zIndex: 20, textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
                     {/* Placeholder Avatar if none */}
                     <img src={getImageUrl(reel.thumbnail?.url) || 'https://via.placeholder.com/40'} alt="User" style={{ width: '40px', height: '40px', borderRadius: '50%', marginRight: '10px', border: '2px solid white' }} />
-                    <h4 style={{ margin: 0 }}>InPlay Official</h4>
+                    <h4 style={{ margin: 0, color: '#ffffff', textShadow: '0 2px 4px rgba(0,0,0,0.9)' }}>InPlay Official</h4>
                 </div>
-                <p style={{ margin: '0 0 10px 0', fontSize: '0.9rem', lineHeight: '1.4' }}>{reel.title} {reel.description}</p>
+                <p style={{ margin: '0 0 10px 0', fontSize: '0.9rem', lineHeight: '1.4', color: '#ffffff', textShadow: '0 2px 4px rgba(0,0,0,0.9)' }}>{reel.title} {reel.description}</p>
                 {reel.audio && (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem' }}>
                         <MusicIcon />
                         <div className="scrolling-text" style={{ width: '150px', overflow: 'hidden', whiteSpace: 'nowrap' }}>
-                            <span>{reel.audio.title || 'Original Audio'}</span>
+                            <span style={{ color: '#ffffff' }}>{reel.audio.title || 'Original Audio'}</span>
                         </div>
                     </div>
                 )}
