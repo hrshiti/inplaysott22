@@ -120,7 +120,7 @@ exports.deleteAudioSeries = async (req, res, next) => {
             return res.status(404).json({ success: false, message: 'Audio Series not found' });
         }
 
-        await series.remove();
+        await series.deleteOne();
 
         res.status(200).json({
             success: true,
