@@ -523,6 +523,7 @@ export default function VideoPlayer({ movie, episode, onClose, onToggleMyList, o
     if (isQuickBite) {
         return (
             <div
+                className="video-player-wrapper"
                 ref={mainContainerRef}
                 onClick={handleScreenTap}
                 onTouchStart={handleTouchStart}
@@ -910,6 +911,7 @@ export default function VideoPlayer({ movie, episode, onClose, onToggleMyList, o
     // Layout: Video at Top/Inline (if not fullscreen), Details Below.
     return (
         <div
+            className="video-player-wrapper"
             style={{
                 position: 'fixed',
                 inset: 0,
