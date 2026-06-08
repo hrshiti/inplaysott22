@@ -95,7 +95,7 @@ export default function LegalPage({ type }) {
                         {bulletItems.map((item, idx) => (
                             <li key={idx} style={{ fontSize: '0.85rem', color: '#bbb', lineHeight: '1.5', listStyle: 'none', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
                                 <span style={{ color: '#ff4d4d', marginTop: '2px', flexShrink: 0 }}>▸</span>
-                                <span dangerouslySetInnerHTML={{ __html: inlineFormat(item) }} />
+                                <span style={{ color: 'inherit' }} dangerouslySetInnerHTML={{ __html: inlineFormat(item) }} />
                             </li>
                         ))}
                     </ul>
@@ -174,10 +174,11 @@ export default function LegalPage({ type }) {
                     <div style={{ color: '#aaa', fontSize: '0.9rem', lineHeight: '1.6' }}>
                         <h3 style={{ color: '#fefefe', marginBottom: '16px' }}>Privacy Policy</h3>
                         <p style={{ marginBottom: '16px', color: '#fefefe' }}>Last updated: {appSettings?.privacyPolicy?.lastUpdated ? new Date(appSettings.privacyPolicy.lastUpdated).toLocaleDateString() : 'January 2026'}</p>
-                        <div
-                            style={{ whiteSpace: 'pre-wrap' }}
-                            dangerouslySetInnerHTML={{ __html: appSettings?.privacyPolicy?.content || 'InPlay ("we", "our", or "us") is committed to protecting your privacy...' }}
-                        />
+                        <div style={{ whiteSpace: 'pre-wrap', color: '#aaa' }}>
+                            {appSettings?.privacyPolicy?.content ? parseAboutContent(appSettings.privacyPolicy.content) : (
+                                <p style={{ color: '#aaa' }}>InPlay ("we", "our", or "us") is committed to protecting your privacy...</p>
+                            )}
+                        </div>
                     </div>
                 );
             case 'about':
@@ -217,19 +218,19 @@ export default function LegalPage({ type }) {
                             <div style={{ height: '1px', background: 'rgba(255,255,255,0.07)', margin: '8px 0' }}></div>
                             {appSettings?.aboutInPlay?.website && (
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <span style={{ color: '#555', fontSize: '0.85rem' }}>Website</span>
+                                    <span style={{ color: '#ccc', fontSize: '0.85rem' }}>Website</span>
                                     <a href={`https://${appSettings.aboutInPlay.website}`} target="_blank" rel="noreferrer" style={{ color: '#ff4d4d', textDecoration: 'none', fontSize: '0.85rem' }}>{appSettings.aboutInPlay.website}</a>
                                 </div>
                             )}
                             {appSettings?.aboutInPlay?.twitter && (
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <span style={{ color: '#555', fontSize: '0.85rem' }}>Twitter</span>
+                                    <span style={{ color: '#ccc', fontSize: '0.85rem' }}>Twitter</span>
                                     <a href={`https://twitter.com/${appSettings.aboutInPlay.twitter.replace('@', '')}`} target="_blank" rel="noreferrer" style={{ color: '#ff4d4d', textDecoration: 'none', fontSize: '0.85rem' }}>{appSettings.aboutInPlay.twitter}</a>
                                 </div>
                             )}
                             {appSettings?.aboutInPlay?.instagram && (
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <span style={{ color: '#555', fontSize: '0.85rem' }}>Instagram</span>
+                                    <span style={{ color: '#ccc', fontSize: '0.85rem' }}>Instagram</span>
                                     <a href={`https://instagram.com/${appSettings.aboutInPlay.instagram.replace('@', '')}`} target="_blank" rel="noreferrer" style={{ color: '#ff4d4d', textDecoration: 'none', fontSize: '0.85rem' }}>{appSettings.aboutInPlay.instagram}</a>
                                 </div>
                             )}
