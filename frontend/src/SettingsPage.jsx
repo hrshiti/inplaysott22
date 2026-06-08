@@ -236,7 +236,7 @@ export default function SettingsPage({ onLogout, currentUser, onUpdateUser }) {
                 >
                     <ArrowLeft size={24} />
                 </motion.button>
-                <h2 style={{ fontSize: '1.25rem', fontWeight: '700' }}>Settings</h2>
+                <h2 style={{ fontSize: '1.25rem', fontWeight: '700', color: '#fefefe' }}>Settings</h2>
             </header>
 
             {/* Profile Brief */}
@@ -273,8 +273,8 @@ export default function SettingsPage({ onLogout, currentUser, onUpdateUser }) {
                         </div>
                     )}
                     <div>
-                        <h3 style={{ fontSize: '1.2rem', fontWeight: '700', marginBottom: '4px' }}>{userName}</h3>
-                        <span style={{ fontSize: '0.9rem', color: '#888' }}>{userEmail}</span>
+                        <h3 style={{ fontSize: '1.2rem', fontWeight: '700', marginBottom: '4px', color: '#fefefe' }}>{userName}</h3>
+                        <span style={{ fontSize: '0.9rem', color: '#fcfcfc' }}>{userEmail}</span>
                     </div>
                 </div>
 
