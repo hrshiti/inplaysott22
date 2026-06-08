@@ -78,7 +78,7 @@ export default function MySpacePage({ onMovieClick, myList, likedVideos, watchHi
             {/* Quick Actions Hub Grid */}
             <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(2, 1fr)',
+                gridTemplateColumns: 'repeat(3, 1fr)',
                 gap: '12px',
                 marginBottom: '36px'
             }}>
@@ -142,25 +142,7 @@ export default function MySpacePage({ onMovieClick, myList, likedVideos, watchHi
                     <span style={{ fontSize: '0.75rem', color: '#64748b' }}>{watchHistory?.length || 0} items</span>
                 </motion.div>
 
-                <motion.div
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => navigate('/downloads')}
-                    style={{
-                        background: '#f8fafc',
-                        border: '1px solid #e2e8f0',
-                        borderRadius: '16px',
-                        padding: '16px',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '4px',
-                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.02)'
-                    }}
-                >
-                    <Download size={20} color="#8b5cf6" />
-                    <span style={{ fontSize: '0.9rem', fontWeight: '700', color: '#0f172a', marginTop: '6px' }}>Downloads</span>
-                    <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Offline streaming</span>
-                </motion.div>
+
             </div>
 
             {/* My List Section */}

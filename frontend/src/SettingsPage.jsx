@@ -302,21 +302,22 @@ export default function SettingsPage({ onLogout, currentUser, onUpdateUser }) {
                                         alignItems: 'center',
                                         gap: '16px',
                                         padding: '16px',
-                                        background: 'rgba(255,255,255,0.03)',
+                                        background: '#f8fafc',
                                         borderRadius: '16px',
                                         cursor: 'pointer',
-                                        border: '1px solid rgba(255,255,255,0.02)'
+                                        border: '1px solid #e2e8f0',
+                                        boxShadow: '0 2px 4px rgba(0,0,0,0.02)'
                                     }}
                                 >
                                     <div style={{
                                         width: '40px',
                                         height: '40px',
                                         borderRadius: '12px',
-                                        background: 'rgba(255,255,255,0.05)',
+                                        background: '#f1f5f9',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
-                                        color: '#aaa'
+                                        color: '#64748b'
                                     }}>
                                         {item.icon}
                                     </div>
@@ -523,7 +524,7 @@ export default function SettingsPage({ onLogout, currentUser, onUpdateUser }) {
                                                 <input
                                                     id="avatar-upload"
                                                     type="file"
-                                                    accept="image/*"
+                                                    accept=".jpg,.jpeg,.png,.webp"
                                                     onChange={handleAvatarChange}
                                                     disabled={isUploading}
                                                     style={{ display: 'none' }}

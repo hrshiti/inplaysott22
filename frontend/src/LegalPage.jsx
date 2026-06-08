@@ -66,7 +66,7 @@ export default function LegalPage({ type }) {
             // ## H2 headings
             if (line.startsWith('## ')) {
                 elements.push(
-                    <h3 key={i} style={{ fontSize: '1rem', fontWeight: '800', color: '#fff', marginTop: '12px', marginBottom: '6px' }}>
+                    <h3 key={i} style={{ fontSize: '1rem', fontWeight: '800', color: '#fefefe', marginTop: '12px', marginBottom: '6px' }}>
                         {line.replace(/^## /, '')}
                     </h3>
                 );
@@ -76,7 +76,7 @@ export default function LegalPage({ type }) {
             // # H1 headings
             if (line.startsWith('# ')) {
                 elements.push(
-                    <h2 key={i} style={{ fontSize: '1.1rem', fontWeight: '900', color: '#fff', marginTop: '16px', marginBottom: '8px' }}>
+                    <h2 key={i} style={{ fontSize: '1.1rem', fontWeight: '900', color: '#fefefe', marginTop: '16px', marginBottom: '8px' }}>
                         {line.replace(/^# /, '')}
                     </h2>
                 );
@@ -118,7 +118,7 @@ export default function LegalPage({ type }) {
     // Inline formatting: **bold**, *italic*, [link](url), `code`
     const inlineFormat = (text) => {
         return text
-            .replace(/\*\*(.+?)\*\*/g, '<strong style="color:#fff;font-weight:700">$1</strong>')
+            .replace(/\*\*(.+?)\*\*/g, '<strong style="color:#fefefe;font-weight:700">$1</strong>')
             .replace(/\*(.+?)\*/g, '<em style="color:#ddd">$1</em>')
             .replace(/`(.+?)`/g, '<code style="background:rgba(255,77,77,0.15);color:#ff6b6b;padding:1px 5px;border-radius:4px;font-size:0.8em">$1</code>')
             .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noreferrer" style="color:#ff4d4d;text-decoration:underline">$1</a>');
@@ -142,7 +142,7 @@ export default function LegalPage({ type }) {
                 return (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                            <h3 style={{ fontSize: '1rem', fontWeight: '700', marginBottom: '8px' }}>Frequently Asked Questions</h3>
+                            <h3 style={{ fontSize: '1rem', fontWeight: '700', marginBottom: '8px', color: '#fefefe' }}>Frequently Asked Questions</h3>
                             {(appSettings?.helpCenter?.faqs || [
                                 { question: 'How do I cancel my subscription?', answer: 'Go to settings to cancel.' },
                                 { question: 'Can I watch offline?', answer: 'Yes, download the videos.' },
@@ -157,9 +157,9 @@ export default function LegalPage({ type }) {
                                     cursor: 'pointer',
                                     border: '1px solid rgba(255,255,255,0.05)'
                                 }}>
-                                    <summary style={{ fontSize: '0.9rem', listStyle: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#fff' }}>
-                                        <span>{faq.question}</span>
-                                        <ChevronRight size={16} color="#666" />
+                                    <summary style={{ fontSize: '0.9rem', listStyle: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#fefefe' }}>
+                                        <span style={{ color: '#fefefe' }}>{faq.question}</span>
+                                        <ChevronRight size={16} color="#bbb" />
                                     </summary>
                                     <p style={{ marginTop: '12px', fontSize: '0.85rem', color: '#888', lineHeight: '1.5' }}>
                                         {faq.answer}
@@ -172,8 +172,8 @@ export default function LegalPage({ type }) {
             case 'privacy':
                 return (
                     <div style={{ color: '#aaa', fontSize: '0.9rem', lineHeight: '1.6' }}>
-                        <h3 style={{ color: 'white', marginBottom: '16px' }}>Privacy Policy</h3>
-                        <p style={{ marginBottom: '16px' }}>Last updated: {appSettings?.privacyPolicy?.lastUpdated ? new Date(appSettings.privacyPolicy.lastUpdated).toLocaleDateString() : 'January 2026'}</p>
+                        <h3 style={{ color: '#fefefe', marginBottom: '16px' }}>Privacy Policy</h3>
+                        <p style={{ marginBottom: '16px', color: '#fefefe' }}>Last updated: {appSettings?.privacyPolicy?.lastUpdated ? new Date(appSettings.privacyPolicy.lastUpdated).toLocaleDateString() : 'January 2026'}</p>
                         <div
                             style={{ whiteSpace: 'pre-wrap' }}
                             dangerouslySetInnerHTML={{ __html: appSettings?.privacyPolicy?.content || 'InPlay ("we", "our", or "us") is committed to protecting your privacy...' }}
@@ -194,10 +194,10 @@ export default function LegalPage({ type }) {
                             margin: '0 auto 24px',
                             boxShadow: '0 8px 32px rgba(255, 77, 77, 0.3)'
                         }}>
-                            <div style={{ color: 'white', fontSize: '2rem', fontWeight: '900 italic' }}>IP</div>
+                            <div style={{ color: '#fefefe', fontSize: '2rem', fontWeight: '900 italic' }}>IP</div>
                         </div>
-                        <h3 style={{ fontSize: '1.5rem', fontWeight: '800', marginBottom: '8px', color: '#fff' }}>InPlay</h3>
-                        <p style={{ color: '#666', marginBottom: '32px' }}>Version {appSettings?.aboutInPlay?.version || '2.4.0 (Stable Build)'}</p>
+                        <h3 style={{ fontSize: '1.5rem', fontWeight: '800', marginBottom: '8px', color: '#fefefe' }}>InPlay</h3>
+                        <p style={{ color: '#ccc', marginBottom: '32px' }}>Version {appSettings?.aboutInPlay?.version || '2.4.0 (Stable Build)'}</p>
                         <div style={{
                             background: 'rgba(255,255,255,0.03)',
                             borderRadius: '16px',
@@ -234,11 +234,11 @@ export default function LegalPage({ type }) {
                                 </div>
                             )}
                         </div>
-                        <p style={{ color: '#333', fontSize: '0.75rem', marginTop: '40px' }}>&copy; {new Date().getFullYear()} InPlay Entertainment Records Inc.<br />All rights reserved.</p>
+                        <p style={{ color: '#888', fontSize: '0.75rem', marginTop: '40px' }}>&copy; {new Date().getFullYear()} InPlay Entertainment Records Inc.<br />All rights reserved.</p>
                     </div>
                 );
             default:
-                return <div style={{ color: 'white' }}>Page not found</div>;
+                return <div style={{ color: '#fefefe' }}>Page not found</div>;
         }
     };
 
@@ -246,7 +246,7 @@ export default function LegalPage({ type }) {
         <div style={{
             minHeight: '100vh',
             background: '#000',
-            color: 'white',
+            color: '#fefefe',
             display: 'flex',
             flexDirection: 'column'
         }}>
@@ -271,11 +271,11 @@ export default function LegalPage({ type }) {
                             navigate('/');
                         }
                     }}
-                    style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px', marginLeft: '-8px' }}
+                    style={{ background: 'transparent', border: 'none', color: '#fefefe', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px', marginLeft: '-8px' }}
                 >
                     <ArrowLeft size={24} />
                 </motion.button>
-                <h2 style={{ fontSize: '1.2rem', fontWeight: '700' }}>{getTitle()}</h2>
+                <h2 style={{ fontSize: '1.2rem', fontWeight: '700', color: '#fefefe' }}>{getTitle()}</h2>
             </header>
 
             <main style={{ padding: '24px', flex: 1, overflowY: 'auto' }}>

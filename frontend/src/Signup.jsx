@@ -112,7 +112,7 @@ export default function Signup({ onClose, onSwitchToLogin, onSignupSuccess }) {
             <h2 style={{
               fontSize: '1.75rem',
               fontWeight: '800',
-              color: 'white',
+              color: '#fefefe',
               marginBottom: '8px',
               fontFamily: 'var(--font-display)'
             }}>

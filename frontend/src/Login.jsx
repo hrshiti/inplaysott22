@@ -111,7 +111,7 @@ export default function Login({ onClose, onSwitchToSignup, onLoginSuccess }) {
             <h2 style={{
               fontSize: '2rem',
               fontWeight: '800',
-              color: 'white',
+              color: '#fefefe',
               marginBottom: '8px',
               letterSpacing: '-0.5px'
             }}>

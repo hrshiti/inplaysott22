@@ -327,18 +327,34 @@ function ReelItem({
     };
 
     const handleShare = async () => {
+        const shareData = {
+            title: reel.title || 'InPlay Short',
+            text: `Watch ${reel.title || 'this short'} on InPlay!`,
+            url: window.location.href
+        };
+
+        // 1. Try Flutter Bridge
+        if (window.ShareChannel && window.ShareChannel.postMessage) {
+            window.ShareChannel.postMessage(JSON.stringify(shareData));
+            return;
+        }
+
+        // 2. Try Native Web Share API
         if (navigator.share) {
             try {
-                await navigator.share({
-                    title: reel.title,
-                    text: `Watch ${reel.title} on InPlay!`,
-                    url: window.location.href
-                });
+                await navigator.share(shareData);
+                return;
             } catch (err) {
                 console.log("Share skipped");
             }
-        } else {
+        } 
+        
+        // 3. Fallback to Clipboard
+        try {
+            await navigator.clipboard.writeText(shareData.url);
             alert('Link copied to clipboard!');
+        } catch(err) {
+            console.log("Clipboard fallback failed");
         }
     };
 

@@ -301,20 +301,34 @@ export default function MovieDetailsPage({
                     />
                     <ActionButton icon={<Share2 size={24} />} label="Share" onClick={async (e) => {
                         e.stopPropagation();
+                        const shareData = {
+                            title: displayMovie.title || 'InPlay Content',
+                            text: `Check out ${displayMovie.title || 'this'} on InPlay!`,
+                            url: window.location.href
+                        };
+                        
+                        // 1. Try Flutter Bridge
+                        if (window.ShareChannel && window.ShareChannel.postMessage) {
+                            window.ShareChannel.postMessage(JSON.stringify(shareData));
+                            return;
+                        }
+
+                        // 2. Try Web API
                         if (navigator.share) {
                             try {
-                                await navigator.share({
-                                    title: displayMovie.title,
-                                    text: `Check out ${displayMovie.title} on InPlay!`,
-                                    url: window.location.href
-                                });
+                                await navigator.share(shareData);
+                                return;
                             } catch (error) {
                                 console.log('Error sharing:', error);
                             }
-                        } else {
-                            // Fallback
-                            navigator.clipboard.writeText(`Check out ${displayMovie.title}: ${window.location.href}`);
+                        } 
+                        
+                        // 3. Fallback
+                        try {
+                            await navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`);
                             alert('Link copied to clipboard!');
+                        } catch(err) {
+                            console.log('Clipboard fallback failed');
                         }
                     }} />
                 </div>
