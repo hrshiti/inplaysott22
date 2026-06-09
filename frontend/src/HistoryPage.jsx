@@ -55,8 +55,8 @@ export default function HistoryPage({ onMovieClick, watchHistory = [], onRefresh
     return (
         <div className="history-page" style={{
             minHeight: '100vh',
-            background: '#000',
-            color: 'white',
+            background: 'var(--bg-primary)',
+            color: 'var(--text-primary)',
             padding: '20px',
             paddingBottom: '100px'
         }}>
@@ -68,19 +68,21 @@ export default function HistoryPage({ onMovieClick, watchHistory = [], onRefresh
                 marginBottom: '24px',
                 position: 'sticky',
                 top: 0,
-                background: 'rgba(0,0,0,0.8)',
+                background: 'var(--glass)',
                 backdropFilter: 'blur(10px)',
-                padding: '10px 0',
-                zIndex: 10
+                zIndex: 10,
+                borderBottom: '1px solid var(--glass-border)',
+                margin: '-20px -20px 24px -20px',
+                padding: '16px 20px'
             }}>
                 <motion.button
                     whileTap={{ scale: 0.9 }}
                     onClick={() => navigate(-1)}
-                    style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer' }}
+                    style={{ background: 'transparent', border: 'none', color: 'var(--text-primary)', cursor: 'pointer', display: 'flex' }}
                 >
                     <ArrowLeft size={24} />
                 </motion.button>
-                <h2 style={{ fontSize: '1.25rem', fontWeight: '700' }}>Watch History</h2>
+                <h2 style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--text-primary)', margin: 0 }}>Watch History</h2>
                 <div style={{ flex: 1 }} />
                 {watchHistory.length > 0 && (
                     <motion.button
@@ -88,13 +90,14 @@ export default function HistoryPage({ onMovieClick, watchHistory = [], onRefresh
                         onClick={handleClearHistory}
                         disabled={isClearing}
                         style={{
-                            background: 'rgba(255,255,255,0.1)',
+                            background: 'rgba(255, 10, 22, 0.1)',
                             border: 'none',
-                            color: '#ff4d4d',
+                            color: 'var(--accent)',
                             padding: '8px',
                             borderRadius: '8px',
                             cursor: 'pointer',
-                            opacity: isClearing ? 0.5 : 1
+                            opacity: isClearing ? 0.5 : 1,
+                            display: 'flex'
                         }}
                     >
                         <Trash2 size={18} />
@@ -116,12 +119,13 @@ export default function HistoryPage({ onMovieClick, watchHistory = [], onRefresh
                             style={{
                                 display: 'flex',
                                 gap: '16px',
-                                background: 'rgba(255,255,255,0.05)',
+                                background: 'var(--bg-secondary)',
                                 borderRadius: '12px',
                                 overflow: 'hidden',
                                 cursor: 'pointer',
-                                border: '1px solid rgba(255,255,255,0.05)',
-                                position: 'relative'
+                                border: '1px solid var(--glass-border)',
+                                position: 'relative',
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.03)'
                             }}
                         >
                             {/* Remove Button for Individual Item */}
@@ -132,24 +136,25 @@ export default function HistoryPage({ onMovieClick, watchHistory = [], onRefresh
                                     position: 'absolute',
                                     top: '8px',
                                     right: '8px',
-                                    background: 'rgba(0,0,0,0.5)',
-                                    border: 'none',
+                                    background: 'rgba(255,255,255,0.9)',
+                                    border: '1px solid var(--glass-border)',
                                     borderRadius: '50%',
                                     width: '24px',
                                     height: '24px',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    color: '#bbb',
+                                    color: 'var(--text-secondary)',
                                     cursor: 'pointer',
-                                    zIndex: 5
+                                    zIndex: 5,
+                                    boxShadow: '0 2px 5px rgba(0,0,0,0.1)'
                                 }}
                             >
                                 <X size={14} />
                             </motion.button>
 
                             {/* Thumbnail */}
-                            <div style={{ width: '140px', height: '80px', position: 'relative', flexShrink: 0 }}>
+                            <div style={{ width: '140px', height: '80px', position: 'relative', flexShrink: 0, background: 'var(--bg-tertiary)' }}>
                                 <img
                                     src={getImageUrl(item.poster?.url || item.thumbnail?.url || item.backdrop || item.image)}
                                     alt={item.title}
@@ -167,16 +172,16 @@ export default function HistoryPage({ onMovieClick, watchHistory = [], onRefresh
                                     <Play size={20} fill="white" />
                                 </div>
                                 {item.progress && (
-                                    <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '3px', background: 'rgba(255,255,255,0.2)' }}>
-                                        <div style={{ width: `${item.progress}%`, height: '100%', background: '#ff0000' }} />
+                                    <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '3px', background: 'rgba(255,255,255,0.3)' }}>
+                                        <div style={{ width: `${item.progress}%`, height: '100%', background: 'var(--accent)' }} />
                                     </div>
                                 )}
                             </div>
 
                             {/* Content */}
                             <div style={{ flex: 1, padding: '12px 12px 12px 0', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                                <h3 style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '4px', color: '#fff' }}>{item.title}</h3>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', color: '#aaa' }}>
+                                <h3 style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '4px', color: 'var(--text-primary)' }}>{item.title}</h3>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
                                     <Clock size={12} />
                                     <span>{getRelativeTime(item.watchedAt || item.updatedAt)}</span>
                                     <span style={{ opacity: 0.3 }}>|</span>
@@ -189,7 +194,7 @@ export default function HistoryPage({ onMovieClick, watchHistory = [], onRefresh
             </div>
 
             {watchHistory.length === 0 && (
-                <div style={{ textAlign: 'center', padding: '40px', color: '#666' }}>
+                <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-secondary)' }}>
                     <Clock size={48} style={{ marginBottom: '16px', opacity: 0.5 }} />
                     <p>No watch history yet.</p>
                 </div>
