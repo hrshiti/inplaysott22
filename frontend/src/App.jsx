@@ -990,7 +990,7 @@ function App() {
                           gap: '10px'
                         }}>
                           {[
-                            'Action', 'Bhojpuri Hits'
+                            'Action', 'Bhojpuri World'
                           ].map((filter) => {
                             const isActive = activeFilter === filter;
                             return (
