@@ -1013,8 +1013,7 @@ function App() {
                           gap: '10px'
                         }}>
                           {[
-                            'Popular', 'New & Hot', 'Originals', 'Rankings', 'Movies', 'TV', 'Crime Show', 'Broadcast', 'Mms', 'Audio Series', 'Short Film',
-                            ...dynamicStructure.map(t => t.name)
+                            'Action', 'Bhojpuri Hits'
                           ].map((filter) => {
                             const isActive = activeFilter === filter;
                             return (

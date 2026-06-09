@@ -41,7 +41,7 @@ const SearchPage = ({ onMovieClick }) => { // Remove allContent prop as we fetch
         onMovieClick(item);
     };
 
-    const trendingTags = ["Action", "Romance", "Web Series", "Bhojpuri Hits", "New Movies", "Comedy"];
+    const trendingTags = ["Action", "Bhojpuri Hits"];
 
     useEffect(() => {
         // Auto-focus input on mount
