@@ -218,10 +218,8 @@ function App() {
 
   // Helper to check if platform is iOS or Safari for App Store submission review
   const isIosOrSafariPlatform = () => {
-    const userAgent = navigator.userAgent || '';
-    const isIOS = /iPad|iPhone|iPod/.test(userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-    const isSafari = /^((?!chrome|android).)*safari/i.test(userAgent);
-    return isIOS || isSafari;
+    // Return true to enable guest features (like 3 free videos) for all platforms
+    return true;
   };
 
   // Helper to check and increment free content views on iOS/Safari
