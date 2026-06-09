@@ -105,36 +105,38 @@ export default function MovieDetailsPage({
                 left: 0,
                 width: '100%',
                 height: '100vh',
-                background: '#ffffff',
+                background: '#0a0a0a',
                 zIndex: 2000,
                 overflowY: 'auto',
-                color: '#0f172a'
+                color: '#f8fafc'
             }}
         >
             {/* Transparent Header Bar */}
             <div style={{
                 position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 100,
                 display: 'flex', alignItems: 'center', padding: '16px 20px',
-                background: 'linear-gradient(to bottom, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%)'
+                background: 'linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%)',
+                pointerEvents: 'none' // Allow clicks to pass through gradient
             }}>
                 <button
                     onClick={onClose}
                     style={{
-                        background: 'rgba(0,0,0,0.5)',
-                        border: 'none',
+                        pointerEvents: 'auto', // Re-enable clicks for the button
+                        background: 'rgba(0,0,0,0.7)',
+                        border: '1px solid rgba(255,255,255,0.2)',
                         borderRadius: '50%',
-                        width: '40px',
-                        height: '40px',
+                        width: '44px',
+                        height: '44px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: 'white',
+                        color: '#ffffff',
                         cursor: 'pointer',
                         backdropFilter: 'blur(10px)',
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.5)'
                     }}
                 >
-                    <ArrowLeft size={24} strokeWidth={2.5} />
+                    <ArrowLeft size={24} color="#ffffff" strokeWidth={3} />
                 </button>
             </div>
 
@@ -152,7 +154,7 @@ export default function MovieDetailsPage({
                     left: 0,
                     width: '100%',
                     height: '100%',
-                    background: 'linear-gradient(to bottom, rgba(255,255,255,0) 40%, #ffffff 100%)'
+                    background: 'linear-gradient(to bottom, rgba(10,10,10,0) 40%, #0a0a0a 100%)'
                 }} />
             </div>
 
@@ -164,7 +166,7 @@ export default function MovieDetailsPage({
                     lineHeight: '1.1',
                     marginBottom: '8px',
                     fontFamily: 'var(--font-display)',
-                    color: '#0f172a'
+                    color: '#ffffff'
                 }}>
                     {displayMovie.title}
                 </h1>
@@ -228,7 +230,7 @@ export default function MovieDetailsPage({
                 <p style={{
                     fontSize: '0.82rem',
                     lineHeight: '1.5',
-                    color: '#475569',
+                    color: '#cbd5e1',
                     marginBottom: '8px',
                     display: '-webkit-box',
                     WebkitLineClamp: isDescriptionExpanded ? 'unset' : 3,
@@ -257,26 +259,26 @@ export default function MovieDetailsPage({
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px', fontSize: '0.85rem' }}>
                     {displayMovie.cast && (
                         <div>
-                            <span style={{ color: '#64748b', display: 'block', marginBottom: '2px' }}>Cast</span>
-                            <span style={{ color: '#0f172a', fontWeight: '500' }}>{displayMovie.cast}</span>
+                            <span style={{ color: '#94a3b8', display: 'block', marginBottom: '2px' }}>Cast</span>
+                            <span style={{ color: '#ffffff', fontWeight: '500' }}>{displayMovie.cast}</span>
                         </div>
                     )}
                     {displayMovie.producer && (
                         <div>
-                            <span style={{ color: '#64748b', display: 'block', marginBottom: '2px' }}>Producer</span>
-                            <span style={{ color: '#0f172a', fontWeight: '500' }}>{displayMovie.producer}</span>
+                            <span style={{ color: '#94a3b8', display: 'block', marginBottom: '2px' }}>Producer</span>
+                            <span style={{ color: '#ffffff', fontWeight: '500' }}>{displayMovie.producer}</span>
                         </div>
                     )}
                     {displayMovie.production && (
                         <div>
-                            <span style={{ color: '#64748b', display: 'block', marginBottom: '2px' }}>Production</span>
-                            <span style={{ color: '#0f172a', fontWeight: '500' }}>{displayMovie.production}</span>
+                            <span style={{ color: '#94a3b8', display: 'block', marginBottom: '2px' }}>Production</span>
+                            <span style={{ color: '#ffffff', fontWeight: '500' }}>{displayMovie.production}</span>
                         </div>
                     )}
                     {displayMovie.releaseDate && (
                         <div>
-                            <span style={{ color: '#64748b', display: 'block', marginBottom: '2px' }}>Release Date</span>
-                            <span style={{ color: '#0f172a', fontWeight: '500' }}>{new Date(displayMovie.releaseDate).toLocaleDateString()}</span>
+                            <span style={{ color: '#94a3b8', display: 'block', marginBottom: '2px' }}>Release Date</span>
+                            <span style={{ color: '#ffffff', fontWeight: '500' }}>{new Date(displayMovie.releaseDate).toLocaleDateString()}</span>
                         </div>
                     )}
                 </div>
@@ -301,27 +303,41 @@ export default function MovieDetailsPage({
                     />
                     <ActionButton icon={<Share2 size={24} />} label="Share" onClick={async (e) => {
                         e.stopPropagation();
+                        const shareData = {
+                            title: displayMovie.title || 'InPlay Content',
+                            text: `Check out ${displayMovie.title || 'this'} on InPlay!`,
+                            url: window.location.href
+                        };
+                        
+                        // 1. Try Flutter Bridge
+                        if (window.ShareChannel && window.ShareChannel.postMessage) {
+                            window.ShareChannel.postMessage(JSON.stringify(shareData));
+                            return;
+                        }
+
+                        // 2. Try Web API
                         if (navigator.share) {
                             try {
-                                await navigator.share({
-                                    title: displayMovie.title,
-                                    text: `Check out ${displayMovie.title} on InPlay!`,
-                                    url: window.location.href
-                                });
+                                await navigator.share(shareData);
+                                return;
                             } catch (error) {
                                 console.log('Error sharing:', error);
                             }
-                        } else {
-                            // Fallback
-                            navigator.clipboard.writeText(`Check out ${displayMovie.title}: ${window.location.href}`);
+                        } 
+                        
+                        // 3. Fallback
+                        try {
+                            await navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`);
                             alert('Link copied to clipboard!');
+                        } catch(err) {
+                            console.log('Clipboard fallback failed');
                         }
                     }} />
                 </div>
 
                 {/* Tabs */}
-                <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '0px' }}>
-                    <div style={{ display: 'flex', gap: '16px', marginBottom: '16px', borderBottom: '1px solid #e2e8f0' }}>
+                <div style={{ borderTop: '1px solid #334155', paddingTop: '0px' }}>
+                    <div style={{ display: 'flex', gap: '16px', marginBottom: '16px', borderBottom: '1px solid #334155' }}>
                         {isSeries && (
                             <TabButton
                                 label="Episodes"
@@ -351,18 +367,18 @@ export default function MovieDetailsPage({
                                 <div style={{ position: 'relative', marginBottom: '20px' }}>
                                     <button
                                         onClick={() => setIsSeasonOpen(!isSeasonOpen)}
-                                        style={{ background: '#f1f5f9', padding: '12px 16px', borderRadius: '4px', color: '#0f172a', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '1rem', fontWeight: 'bold', border: '1px solid #cbd5e1' }}
+                                        style={{ background: '#1e293b', padding: '12px 16px', borderRadius: '4px', color: '#f8fafc', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '1rem', fontWeight: 'bold', border: '1px solid #334155' }}
                                     >
                                         {selectedSeason ? selectedSeason.name : (displayMovie.seasons && displayMovie.seasons.length > 0 ? displayMovie.seasons[0].name : 'Season 1')} <ChevronDown size={16} />
                                     </button>
 
                                     {isSeasonOpen && displayMovie.seasons && (
-                                        <div style={{ position: 'absolute', top: '100%', left: 0, width: '200px', background: '#ffffff', borderRadius: '4px', zIndex: 10, marginTop: '8px', overflow: 'hidden', border: '1px solid #e2e8f0', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+                                        <div style={{ position: 'absolute', top: '100%', left: 0, width: '200px', background: '#1e293b', borderRadius: '4px', zIndex: 10, marginTop: '8px', overflow: 'hidden', border: '1px solid #334155', boxShadow: '0 4px 12px rgba(0,0,0,0.5)' }}>
                                             {displayMovie.seasons.map(season => (
                                                 <div
                                                     key={season.id || season.seasonNumber}
                                                     onClick={() => { setSelectedSeason(season); setIsSeasonOpen(false); }}
-                                                    style={{ padding: '12px 16px', borderBottom: '1px solid #e2e8f0', cursor: 'pointer', color: '#0f172a', background: selectedSeason && selectedSeason.seasonNumber === season.seasonNumber ? '#f1f5f9' : 'transparent', display: 'flex', justifyContent: 'space-between' }}
+                                                    style={{ padding: '12px 16px', borderBottom: '1px solid #334155', cursor: 'pointer', color: '#f8fafc', background: selectedSeason && selectedSeason.seasonNumber === season.seasonNumber ? '#334155' : 'transparent', display: 'flex', justifyContent: 'space-between' }}
                                                 >
                                                     {season.name || `Season ${season.seasonNumber}`}
                                                 </div>
@@ -396,8 +412,8 @@ export default function MovieDetailsPage({
                                                 </div>
                                             </div>
                                             <div style={{ flex: 1 }}>
-                                                <h4 style={{ fontSize: '0.95rem', marginBottom: '4px', color: '#0f172a' }}>{ep.title}</h4>
-                                                <span style={{ fontSize: '0.85rem', color: '#64748b' }}>{ep.duration ? `${Math.floor(ep.duration / 60)}m` : '24m'}</span>
+                                                <h4 style={{ fontSize: '0.95rem', marginBottom: '4px', color: '#f8fafc' }}>{ep.title}</h4>
+                                                <span style={{ fontSize: '0.85rem', color: '#94a3b8' }}>{ep.duration ? `${Math.floor(ep.duration / 60)}m` : '24m'}</span>
                                             </div>
                                         </div>
                                     ))}
@@ -425,7 +441,7 @@ export default function MovieDetailsPage({
                                                     onSelectMovie(item);
                                                 }
                                             }}
-                                            style={{ aspectRatio: '2/3', background: '#f1f5f9', borderRadius: '8px', overflow: 'hidden', position: 'relative' }}
+                                            style={{ aspectRatio: '2/3', background: '#1e293b', borderRadius: '8px', overflow: 'hidden', position: 'relative' }}
                                         >
                                             <img
                                                 src={getImageUrl(item.poster?.url || item.image)}
@@ -457,10 +473,10 @@ function ActionButton({ icon, label, onClick }) {
         <motion.div
             whileTap={{ scale: 0.9 }}
             onClick={onClick}
-            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', color: '#64748b', cursor: 'pointer' }}
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', color: '#ffffff', cursor: 'pointer' }}
         >
             {icon}
-            <span style={{ fontSize: '0.8rem', color: '#64748b' }}>{label}</span>
+            <span style={{ fontSize: '0.8rem', color: '#ffffff' }}>{label}</span>
         </motion.div>
     );
 }
@@ -473,11 +489,11 @@ function TabButton({ label, active, onClick }) {
                 background: 'transparent',
                 border: 'none',
                 padding: '16px 0',
-                color: active ? '#0f172a' : '#64748b',
+                color: active ? '#ffffff' : '#94a3b8',
                 fontWeight: active ? 'bold' : 'normal',
                 fontSize: '0.95rem',
                 cursor: 'pointer',
-                borderTop: active ? '4px solid var(--accent)' : '4px solid transparent',
+                borderTop: active ? '4px solid #ff0a16' : '4px solid transparent',
                 transition: 'all 0.3s ease'
             }}
         >

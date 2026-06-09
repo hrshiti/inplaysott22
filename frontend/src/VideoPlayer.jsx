@@ -446,19 +446,34 @@ export default function VideoPlayer({ movie, episode, onClose, onToggleMyList, o
     };
 
     const handleShare = async () => {
+        const shareData = {
+            title: movie.title || 'InPlay Video',
+            text: `Watch ${movie.title || 'this'} on InPlay!`,
+            url: window.location.href,
+        };
+
+        // 1. Try Flutter Bridge (for mobile apps)
+        if (window.ShareChannel && window.ShareChannel.postMessage) {
+            window.ShareChannel.postMessage(JSON.stringify(shareData));
+            return;
+        }
+
+        // 2. Try Native Web Share API
         if (navigator.share) {
             try {
-                await navigator.share({
-                    title: movie.title,
-                    text: `Watch ${movie.title} on InPlay!`,
-                    url: window.location.href,
-                });
+                await navigator.share(shareData);
+                return;
             } catch (error) {
                 console.log('Error sharing:', error);
             }
-        } else {
-            // Fallback or explicit instruction
-            console.log("Share not supported");
+        } 
+        
+        // 3. Fallback to Clipboard
+        try {
+            await navigator.clipboard.writeText(shareData.url);
+            alert("Link copied to clipboard!");
+        } catch (err) {
+            console.log("Clipboard fallback failed");
         }
     };
 
@@ -523,6 +538,7 @@ export default function VideoPlayer({ movie, episode, onClose, onToggleMyList, o
     if (isQuickBite) {
         return (
             <div
+                className="video-player-wrapper"
                 ref={mainContainerRef}
                 onClick={handleScreenTap}
                 onTouchStart={handleTouchStart}
@@ -910,6 +926,7 @@ export default function VideoPlayer({ movie, episode, onClose, onToggleMyList, o
     // Layout: Video at Top/Inline (if not fullscreen), Details Below.
     return (
         <div
+            className="video-player-wrapper"
             style={{
                 position: 'fixed',
                 inset: 0,

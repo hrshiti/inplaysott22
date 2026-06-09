@@ -29,7 +29,7 @@ import SettingsPage from './SettingsPage';
 import CategoryPage from './pages/CategoryPage';
 import AudioSeriesUserPage from './pages/AudioSeriesUserPage';
 import DynamicTabPage from './DynamicTabPage';
-import PlanPage from './PlanPage';
+
 import LegalPage from './LegalPage';
 
 import VideoPlayer from './VideoPlayer';
@@ -349,28 +349,7 @@ function App() {
     }
   };
 
-  // Check subscription and redirect if needed
-  useEffect(() => {
-    const checkAccess = async () => {
-      // Don't redirect on public or admin routes
-      if (currentUser && !location.pathname.startsWith('/admin') &&
-        location.pathname !== '/plan' && location.pathname !== '/login' &&
-        location.pathname !== '/signup') {
 
-        const isSubscribed = currentUser.subscription?.isActive;
-        const isTrialUsed = currentUser.subscription?.isTrialUsed;
-
-        // STRICT REDIRECT: If user is NOT active, send to plan page.
-        // We use !isSubscribed to catch false, null, and undefined.
-        // Skip for dev testing numbers
-        if (!isSubscribed && currentUser.phone !== '6268204871' && currentUser.phone !== '6268455485' && currentUser.phone !== '7566331922') {
-          navigate('/plan', { replace: true });
-        }
-      }
-    };
-
-    checkAccess();
-  }, [currentUser?._id, location.pathname, navigate]);
 
   const handleAuthSuccess = () => {
     let savedUser = null;
@@ -938,7 +917,7 @@ function App() {
       {/* Dedicated Routes for Login and Signup */}
       <Route path="/login" element={<Login onClose={() => navigate(-1)} onSwitchToSignup={() => navigate('/signup')} onLoginSuccess={handleAuthSuccess} />} />
       <Route path="/signup" element={<Signup onClose={() => navigate(-1)} onSwitchToLogin={() => navigate('/login')} onSignupSuccess={handleAuthSuccess} />} />
-      <Route path="/plan" element={<PlanPage />} />
+
       <Route path="/help" element={<LegalPage type="help" />} />
       <Route path="/privacy" element={<LegalPage type="privacy" />} />
       <Route path="/about" element={<LegalPage type="about" />} />
@@ -1215,12 +1194,6 @@ function App() {
                                             {[verticalItem.genre, verticalItem.year, verticalItem.rating].filter(Boolean).join(' • ') || 'Action • 2024'}
                                           </span>
                                         </div>
-                                        <button
-                                          onClick={(e) => { e.stopPropagation(); }}
-                                          style={{ background: 'none', border: 'none', padding: '0', cursor: 'pointer', color: '#888', flexShrink: 0, marginTop: '2px' }}
-                                        >
-                                          <MoreVertical size={14} />
-                                        </button>
                                       </div>
                                     </motion.div>
                                   )

@@ -1111,9 +1111,6 @@ html, body {
    ======================================================== */
 body, 
 .app-container,
-.movie-details-page,
-.reels-container,
-.reel-item,
 .settings-page,
 .search-page,
 .history-page,
@@ -1134,45 +1131,7 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, label, button {
   color: #0f172a;
 }
 
-/* High-priority overrides for inline white text styles (color: '#fff', 'white') */
-span[style*="color: rgb(255, 255, 255)"],
-span[style*="color: #fff"],
-span[style*="color: white"],
-span[style*="color:#fff"],
-span[style*="color:white"],
-div[style*="color: rgb(255, 255, 255)"],
-div[style*="color: #fff"],
-div[style*="color: white"],
-div[style*="color:#fff"],
-div[style*="color:white"],
-h1[style*="color: white"],
-h2[style*="color: white"],
-h3[style*="color: white"],
-h4[style*="color: white"],
-h1[style*="color:rgb(255, 255, 255)"],
-h2[style*="color:rgb(255, 255, 255)"],
-h3[style*="color:rgb(255, 255, 255)"],
-h4[style*="color:rgb(255, 255, 255)"] {
-  color: #0f172a !important;
-}
-
-/* High-priority overrides for inline gray text styles (color: '#888', '#aaa', '#bbb') */
-span[style*="color: rgb(136, 136, 136)"],
-span[style*="color: #888"],
-span[style*="color: #aaa"],
-span[style*="color: #bbb"],
-span[style*="color:#888"],
-span[style*="color:#aaa"],
-span[style*="color:#bbb"],
-div[style*="color: rgb(136, 136, 136)"],
-div[style*="color: #888"],
-div[style*="color: #aaa"],
-div[style*="color: #bbb"],
-div[style*="color:#888"],
-div[style*="color:#aaa"],
-div[style*="color:#bbb"] {
-  color: #475569 !important;
-}
+/* Removed destructive inline style global overrides */
 
 /* Ensure white backgrounds on cards and dynamic segments */
 .category-tabs-container {
@@ -1356,32 +1315,7 @@ div[style*="color:#bbb"] {
   z-index: 2 !important;
 }
 
-/* Movie Details Overlay light mode adjustments */
-.movie-details-page {
-  background-color: #ffffff !important;
-  color: #0f172a !important;
-}
-
-.movie-details-page h1,
-.movie-details-page h2,
-.movie-details-page h3,
-.movie-details-page h4,
-.movie-details-page span,
-.movie-details-page p {
-  color: #0f172a !important;
-}
-
-.movie-details-page select, 
-.movie-details-page button:not(.play-button-hero) {
-  color: #0f172a !important;
-}
-
 /* Native detail page banner styling will handle gradients gracefully */
-
-/* Action button icons in light mode */
-.movie-details-page button {
-  color: #0f172a !important;
-}
 
 /* Settings, My Space, List items styling for white theme */
 .setting-item, .list-item, .card-meta {
@@ -1451,7 +1385,38 @@ div[style*="color:#bbb"] {
   inset: 0 !important;
   display: flex !important;
   flex-direction: column !important;
-  justify-content: flex-end !important;
-  padding: 12px 16px !important;
-  background: transparent !important;
+}
+
+/* --- Video Player Light Mode CSS Reset --- */
+/* This cleanly resets the global text color overrides so the video player, reels, and movie details can use their inline styles */
+.video-player-wrapper h1,
+.video-player-wrapper h2,
+.video-player-wrapper h3,
+.video-player-wrapper h4,
+.video-player-wrapper h5,
+.video-player-wrapper h6,
+.video-player-wrapper p,
+.video-player-wrapper span,
+.video-player-wrapper div,
+.video-player-wrapper a,
+.video-player-wrapper label,
+.video-player-wrapper button,
+.video-player-wrapper svg,
+.reels-container h1,
+.reels-container h2,
+.reels-container h3,
+.reels-container h4,
+.reels-container p,
+.reels-container span,
+.reels-container div,
+.reels-container svg,
+.movie-details-page h1,
+.movie-details-page h2,
+.movie-details-page h3,
+.movie-details-page h4,
+.movie-details-page p,
+.movie-details-page span,
+.movie-details-page div,
+.movie-details-page svg {
+  color: unset;
 }

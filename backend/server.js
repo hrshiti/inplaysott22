@@ -12,7 +12,7 @@ const dns = require("dns");
 dns.setDefaultResultOrder("ipv4first");
 // Load environment variables FIRST
 require('dotenv').config();
-
+//
 const PORT = process.env.PORT || 5001;
 const BACKEND_URL = process.env.BACKEND_URL || 'https://api.inplays.in';
 
@@ -58,6 +58,16 @@ app.use(compression());
 
 // SERVE STATIC FILES - All uploaded media (images, videos, audio)
 // Moved before API routes to ensure they are handled properly
+app.use('/api/uploads', express.static(path.join(__dirname, 'uploads'), {
+  maxAge: '7d',
+  immutable: true,
+  setHeaders: (res, filePath) => {
+    res.setHeader('Cache-Control', 'public, max-age=604800, immutable');
+    // Ensure CORS headers for cross-origin media loading
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  }
+}));
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
   maxAge: '7d',
   immutable: true,

@@ -136,6 +136,12 @@ export const AudioPlayerProvider = ({ children }) => {
             return;
         }
 
+        if (!episode || !episode.audioUrl) {
+            console.error('Invalid episode: Missing audioUrl');
+            setIsPlaying(false);
+            return;
+        }
+
         try {
             console.log('Playing episode:', episode.title);
             console.log('Audio URL:', episode.audioUrl);

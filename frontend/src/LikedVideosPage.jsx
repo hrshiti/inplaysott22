@@ -9,8 +9,8 @@ export default function LikedVideosPage({ likedVideos, onMovieClick }) {
     return (
         <div className="liked-videos-page" style={{
             minHeight: '100vh',
-            background: '#000',
-            color: 'white',
+            background: 'var(--bg-primary)',
+            color: 'var(--text-primary)',
             padding: '20px',
             paddingBottom: '100px'
         }}>
@@ -22,19 +22,21 @@ export default function LikedVideosPage({ likedVideos, onMovieClick }) {
                 marginBottom: '24px',
                 position: 'sticky',
                 top: 0,
-                background: 'rgba(0,0,0,0.8)',
+                background: 'var(--glass)',
                 backdropFilter: 'blur(10px)',
-                padding: '10px 0',
-                zIndex: 10
+                zIndex: 10,
+                borderBottom: '1px solid var(--glass-border)',
+                margin: '-20px -20px 24px -20px',
+                padding: '16px 20px'
             }}>
                 <motion.button
                     whileTap={{ scale: 0.9 }}
                     onClick={() => navigate(-1)}
-                    style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer' }}
+                    style={{ background: 'transparent', border: 'none', color: 'var(--text-primary)', cursor: 'pointer', display: 'flex' }}
                 >
                     <ArrowLeft size={24} />
                 </motion.button>
-                <h2 style={{ fontSize: '1.25rem', fontWeight: '700' }}>Liked Videos</h2>
+                <h2 style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--text-primary)', margin: 0 }}>Liked Videos</h2>
                 <div style={{ flex: 1 }} />
             </header>
 
@@ -57,8 +59,8 @@ export default function LikedVideosPage({ likedVideos, onMovieClick }) {
                             aspectRatio: '2/3',
                             borderRadius: '12px',
                             overflow: 'hidden',
-                            background: '#222',
-                            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                            background: 'var(--bg-tertiary)',
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
                             marginBottom: '8px'
                         }}>
                             <img
@@ -70,8 +72,8 @@ export default function LikedVideosPage({ likedVideos, onMovieClick }) {
                         </div>
                         <h4 style={{
                             fontSize: '0.85rem',
-                            fontWeight: '500',
-                            color: '#eee',
+                            fontWeight: '600',
+                            color: 'var(--text-primary)',
                             whiteSpace: 'nowrap',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis'
@@ -83,7 +85,7 @@ export default function LikedVideosPage({ likedVideos, onMovieClick }) {
             </div>
 
             {likedVideos.length === 0 && (
-                <div style={{ textAlign: 'center', padding: '60px', color: '#666' }}>
+                <div style={{ textAlign: 'center', padding: '60px', color: 'var(--text-secondary)' }}>
                     <ThumbsUp size={48} style={{ marginBottom: '16px', opacity: 0.5 }} />
                     <p>No liked videos yet.</p>
                 </div>

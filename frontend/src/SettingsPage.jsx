@@ -45,58 +45,7 @@ export default function SettingsPage({ onLogout, currentUser, onUpdateUser }) {
         fetchSettings();
     }, []);
 
-    useEffect(() => {
-        if (activeModal === 'plan') {
-            fetchSubStatus();
-        }
-    }, [activeModal]);
 
-    const fetchSubStatus = async () => {
-        setIsLoadingSub(true);
-        try {
-            const data = await subscriptionService.getSubscriptionStatus();
-            setSubDetails(data);
-        } catch (err) {
-            console.error("Failed to fetch sub status:", err);
-        } finally {
-            setIsLoadingSub(false);
-        }
-    };
-
-    const handleCancelSub = async () => {
-        if (!confirm("Are you sure? Your subscription will be cancelled IMMEDIATELY and you will lose access to all premium content. You will need to subscribe again to watch videos.")) return;
-        
-        setIsSaving(true);
-        try {
-            await subscriptionService.cancelSubscription();
-            setMessage({ text: 'Subscription cancelled! Access revoked.', type: 'success' });
-            
-            // Refresh detailed sub status for the modal
-            fetchSubStatus();
-            
-            // CRITICAL: Refresh the full user profile to update the main settings list and global app state
-            const updatedUser = await authService.getProfile();
-            
-            // Force local state to inactive so App.jsx redirects immediately
-            if (updatedUser && updatedUser.subscription) {
-              updatedUser.subscription.isActive = false;
-              updatedUser.subscription.status = 'cancelled';
-            }
-            
-            if (onUpdateUser) onUpdateUser(updatedUser);
-
-            // Close modal after a short delay
-            setTimeout(() => {
-                setActiveModal(null);
-                navigate('/plan'); // Redirect to plans since they no longer have access
-            }, 2000);
-            
-        } catch (err) {
-            setMessage({ text: err.message || 'Failed to cancel subscription', type: 'error' });
-        } finally {
-            setIsSaving(false);
-        }
-    };
 
     const handleDeleteAccount = async () => {
         if (!window.confirm("Are you sure you want to delete your account? This action is permanent and all your data will be lost from our servers. You will need to register again to use InPlay.")) {
@@ -220,15 +169,8 @@ export default function SettingsPage({ onLogout, currentUser, onUpdateUser }) {
         {
             title: 'Account',
             items: [
-                { id: 'profile', icon: <User size={20} />, label: 'Profile Settings', value: userName, action: () => setActiveModal('profile') },
-                { id: 'plan', icon: <Crown size={20} />, label: 'Subscription', value: userPlan, action: () => setActiveModal('plan') },
-            ].filter(item => {
-                if (item.id === 'plan') {
-                    const hiddenNumbers = ['6268204871', '6268455485'];
-                    return !hiddenNumbers.includes(currentUser?.phone);
-                }
-                return true;
-            })
+                { id: 'profile', icon: <User size={20} />, label: 'Profile Settings', value: userName, action: () => setActiveModal('profile') }
+            ]
         },
         {
             title: 'Support & Legal',
@@ -294,7 +236,7 @@ export default function SettingsPage({ onLogout, currentUser, onUpdateUser }) {
                 >
                     <ArrowLeft size={24} />
                 </motion.button>
-                <h2 style={{ fontSize: '1.25rem', fontWeight: '700' }}>Settings</h2>
+                <h2 style={{ fontSize: '1.25rem', fontWeight: '700', color: '#fefefe' }}>Settings</h2>
             </header>
 
             {/* Profile Brief */}
@@ -331,8 +273,8 @@ export default function SettingsPage({ onLogout, currentUser, onUpdateUser }) {
                         </div>
                     )}
                     <div>
-                        <h3 style={{ fontSize: '1.2rem', fontWeight: '700', marginBottom: '4px' }}>{userName}</h3>
-                        <span style={{ fontSize: '0.9rem', color: '#888' }}>{userEmail}</span>
+                        <h3 style={{ fontSize: '1.2rem', fontWeight: '700', marginBottom: '4px', color: '#fefefe' }}>{userName}</h3>
+                        <span style={{ fontSize: '0.9rem', color: '#fcfcfc' }}>{userEmail}</span>
                     </div>
                 </div>
 
@@ -360,21 +302,22 @@ export default function SettingsPage({ onLogout, currentUser, onUpdateUser }) {
                                         alignItems: 'center',
                                         gap: '16px',
                                         padding: '16px',
-                                        background: 'rgba(255,255,255,0.03)',
+                                        background: '#f8fafc',
                                         borderRadius: '16px',
                                         cursor: 'pointer',
-                                        border: '1px solid rgba(255,255,255,0.02)'
+                                        border: '1px solid #e2e8f0',
+                                        boxShadow: '0 2px 4px rgba(0,0,0,0.02)'
                                     }}
                                 >
                                     <div style={{
                                         width: '40px',
                                         height: '40px',
                                         borderRadius: '12px',
-                                        background: 'rgba(255,255,255,0.05)',
+                                        background: '#f1f5f9',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
-                                        color: '#aaa'
+                                        color: '#64748b'
                                     }}>
                                         {item.icon}
                                     </div>
@@ -581,7 +524,7 @@ export default function SettingsPage({ onLogout, currentUser, onUpdateUser }) {
                                                 <input
                                                     id="avatar-upload"
                                                     type="file"
-                                                    accept="image/*"
+                                                    accept=".jpg,.jpeg,.png,.webp"
                                                     onChange={handleAvatarChange}
                                                     disabled={isUploading}
                                                     style={{ display: 'none' }}
@@ -657,132 +600,7 @@ export default function SettingsPage({ onLogout, currentUser, onUpdateUser }) {
                                 </>
                             )}
 
-                             {/* PLAN CONTENT */}
-                             {activeModal === 'plan' && (
-                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                                     {isLoadingSub ? (
-                                         <div style={{ display: 'flex', justifyContent: 'center', padding: '40px' }}>
-                                             <motion.div
-                                                 animate={{ rotate: 360 }}
-                                                 transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
-                                                 style={{ width: '30px', height: '30px', border: '3px solid #ff4d4d', borderTopColor: 'transparent', borderRadius: '50%' }}
-                                             />
-                                         </div>
-                                     ) : (subDetails?.isActive && subDetails?.status !== 'cancelled') ? (
-                                         <div style={{
-                                             background: 'linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%)',
-                                             borderRadius: '24px',
-                                             padding: '24px',
-                                             border: '1px solid rgba(255,255,255,0.1)',
-                                             textAlign: 'center'
-                                         }}>
-                                             <div style={{
-                                                 width: '60px',
-                                                 height: '60px',
-                                                 borderRadius: '50%',
-                                                 background: 'rgba(255, 215, 0, 0.1)',
-                                                 display: 'flex',
-                                                 alignItems: 'center',
-                                                 justifyContent: 'center',
-                                                 margin: '0 auto 16px',
-                                                 color: '#ffd700'
-                                             }}>
-                                                 <Crown size={30} />
-                                             </div>
-                                             <h3 style={{ fontSize: '1.5rem', fontWeight: '800', marginBottom: '4px' }}>{subDetails.planName}</h3>
-                                             <p style={{ color: '#888', marginBottom: '20px' }}>
-                                                 {subDetails.isTrial ? 'Trial active' : 'Subscription active'} • ₹{subDetails.price}
-                                             </p>
 
-                                             <div style={{
-                                                 display: 'grid',
-                                                 gridTemplateColumns: '1fr 1fr',
-                                                 gap: '12px',
-                                                 textAlign: 'left',
-                                                 background: 'rgba(255,255,255,0.02)',
-                                                 padding: '20px',
-                                                 borderRadius: '16px',
-                                                 marginBottom: '20px'
-                                             }}>
-                                                 <div style={{ color: '#666', fontSize: '0.8rem' }}>Started on</div>
-                                                 <div style={{ fontSize: '0.9rem', textAlign: 'right' }}>{new Date(subDetails.startDate).toLocaleDateString()}</div>
-                                                 <div style={{ color: '#666', fontSize: '0.8rem' }}>Next Billing / Expiry</div>
-                                                 <div style={{ fontSize: '0.9rem', textAlign: 'right', color: '#ff4d4d', fontWeight: 'bold' }}>{new Date(subDetails.endDate).toLocaleDateString()}</div>
-                                             </div>
-
-                                             <p style={{ fontSize: '0.75rem', color: '#555', marginBottom: '16px' }}>ID: {subDetails.razorpaySubscriptionId}</p>
-                                             
-                                             {subDetails.status === 'cancelled' ? (
-                                                 <div style={{
-                                                     padding: '12px',
-                                                     borderRadius: '12px',
-                                                     background: 'rgba(255, 77, 77, 0.1)',
-                                                     color: '#ff4d4d',
-                                                     border: '1px solid rgba(255, 77, 77, 0.2)',
-                                                     fontSize: '0.9rem',
-                                                     fontWeight: '600',
-                                                     textAlign: 'center'
-                                                 }}>
-                                                     Subscription Cancelled
-                                                 </div>
-                                             ) : (
-                                                 <motion.button
-                                                     whileTap={{ scale: 0.95 }}
-                                                     onClick={handleCancelSub}
-                                                     style={{
-                                                         width: '100%',
-                                                         padding: '12px',
-                                                         borderRadius: '12px',
-                                                         background: 'transparent',
-                                                         color: '#ff4d4d',
-                                                         border: '1px solid rgba(255, 77, 77, 0.3)',
-                                                         fontSize: '0.9rem',
-                                                         fontWeight: '600',
-                                                         cursor: 'pointer'
-                                                     }}
-                                                 >
-                                                     Cancel Subscription
-                                                 </motion.button>
-                                             )}
-                                         </div>
-                                     ) : (
-                                         <div style={{
-                                             background: '#111',
-                                             borderRadius: '24px',
-                                             padding: '40px 24px',
-                                             textAlign: 'center',
-                                             border: '1px dashed #333'
-                                         }}>
-                                             <div style={{ color: '#444', marginBottom: '16px' }}>
-                                                 <Crown size={48} opacity={0.2} />
-                                             </div>
-                                             <h3 style={{ fontSize: '1.2rem', fontWeight: '700', marginBottom: '8px' }}>No Active Plan</h3>
-                                             <p style={{ color: '#666', marginBottom: '24px', fontSize: '0.9rem' }}>Subscribe to access premium content and offline downloads.</p>
-                                             
-                                             <motion.button
-                                                 whileTap={{ scale: 0.95 }}
-                                                 onClick={() => {
-                                                    setActiveModal(null);
-                                                    navigate('/plan');
-                                                 }}
-                                                 style={{
-                                                     padding: '12px 32px',
-                                                     borderRadius: '30px',
-                                                     background: '#ff4d4d',
-                                                     color: 'white',
-                                                     border: 'none',
-                                                     fontSize: '0.9rem',
-                                                     fontWeight: '700',
-                                                     cursor: 'pointer'
-                                                 }}
-                                             >
-                                                 View Plans
-                                             </motion.button>
-                                         </div>
-                                     )}
-                                  
-                                 </div>
-                             )}
 
                             {/* NOTIFICATIONS CONTENT */}
                             {activeModal === 'notifications' && (
