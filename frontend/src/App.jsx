@@ -361,6 +361,9 @@ function App() {
       setCurrentUser(user);
       setMyList(user.myList || []);
       setLikedVideos(user.likedContent || []);
+      
+      // Fetch fresh profile from backend to get populated lists
+      loadUserProfile();
     }
   };
   // Use Trending Now content for Hero Slideshow
@@ -788,6 +791,10 @@ function App() {
     authService.logout();
     socketService.disconnect();
     setCurrentUser(null);
+    setLikedVideos([]);
+    setMyList([]);
+    setWatchHistory([]);
+    setContinueWatching([]);
     showToast('Logged out successfully');
     navigate('/login', { replace: true });
   };
