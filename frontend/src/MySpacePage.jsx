@@ -349,7 +349,7 @@ function SpaceCard({ item, type, onClick }) {
                 border: '1px solid #cbd5e1'
             }}>
                 <img
-                    src={getImageUrl(item.poster?.url || item.image || item.backdrop)}
+                    src={getImageUrl(item.poster?.url || item.thumbnail?.url || item.thumbnail?.secure_url || item.image || item.backdrop || item.poster)}
                     onError={(e) => { e.target.src = "https://placehold.co/110x160/222/FFF?text=No+Image" }}
                     alt={item.title}
                     style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: isPoster ? 1 : 0.8 }}

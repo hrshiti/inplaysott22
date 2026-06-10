@@ -6,8 +6,8 @@ import authService from './services/api/authService';
 
 export default function Login({ onClose, onSwitchToSignup, onLoginSuccess }) {
   const [step, setStep] = useState(1); // 1 = Phone input, 2 = OTP input
-  const [phone, setPhone] = useState('');
-  const [otp, setOtp] = useState('');
+  const [phone, setPhone] = useState('6268204871');
+  const [otp, setOtp] = useState('123456');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
